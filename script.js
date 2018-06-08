@@ -1,17 +1,12 @@
-// console.log("other: ", xxx.className);
+//set variables 
 var lastNumber  = null;
 var currentNumber = null;
 var operator = null;
 var results = null;
 var decimalSet = false;
 
-function getDisplayData(){
-  return document.getElementsByClassName("output")[0].getAttribute("value");
-}
-
 function displayOutput(myNewValue){
   document.getElementsByClassName("output")[0].setAttribute("value", myNewValue);
-  //getMyAttribute(myClass, myAttribute);
 }
 
 function doMath(xin, yin, operator){
@@ -61,17 +56,6 @@ function calculatorLogic(xin){
 
 function buttonClick(xin) {
   let myValue = xin.getAttribute("value");
-
-  //check for operators
-  //clear
-  //percent
-  //opposite
-  //divide
-  //multiply
-  //subtract
-  //add
-  //period
-  //equals
 
   //if operator has been set....
   switch (myValue){
@@ -196,6 +180,3 @@ function buttonClick(xin) {
 
   } //end switch
 } //end function
-
-//proof script is working, set to 0;
-displayOutput("0");
