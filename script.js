@@ -1,9 +1,10 @@
-//set variables 
+//set variables
 var lastNumber  = null;
 var currentNumber = null;
 var operator = null;
 var results = null;
 var decimalSet = false;
+var fromEquals = false;
 
 function displayOutput(myNewValue){
   document.getElementsByClassName("output")[0].setAttribute("value", myNewValue);
@@ -23,6 +24,22 @@ function doMath(xin, yin, operator){
         case "subtract":
             return xin - yin;
             break;
+  }
+}
+
+//bug fix: When user clicked an operator after clicking equals, the old currentNumber
+//was combined with the old operator. Output was unexpected, and unrelated to the new operator
+function ifFromEquals() {
+
+  if(fromEquals){
+    console.log("Function ifFromEquals(), if statement passed");
+    currentNumber = results;
+    lastNumber = null;
+    operator = null;
+    results = null;
+    decimalSet  = null;
+    fromEquals = false;
+    displayOutput(currentNumber);
   }
 }
 
@@ -69,6 +86,7 @@ function buttonClick(xin) {
             operator = null;
             results = null;
             decimalSet = false;
+            fromEquals = false;
             //document.getElementsByClassName("clear")[0].innerHTML = "AC";
             displayOutput("0");
             break;
@@ -81,6 +99,7 @@ function buttonClick(xin) {
             currentNumber = null;
             results = null;
             decimalSet = false;
+            fromEquals = false;
             document.getElementsByClassName("clear")[0].innerHTML = "AC";
             document.getElementsByClassName("clear")[0].setAttribute("value", "all-clear");
             displayOutput("0");
@@ -108,21 +127,25 @@ function buttonClick(xin) {
 
         case "divide":
             console.log("Divide found on switch");
+            ifFromEquals();
             calculatorLogic(myValue);
             break;
 
         case "multiply":
             console.log("multiply found on switch");
+            ifFromEquals();
             calculatorLogic(myValue);
             break;
 
         case "subtract":
             console.log("Subtract found on switch");
+            ifFromEquals();
             calculatorLogic(myValue);
             break;
 
         case "add":
             console.log("Add found on switch");
+            ifFromEquals();
             calculatorLogic(myValue);
             break;
 
@@ -141,26 +164,14 @@ function buttonClick(xin) {
             console.log("logic called");
             if(lastNumber != null && currentNumber != null && operator != null){
               //if all values have been set
-              //example: 3 x 3 / ....
+              //example: 3 x 3 ....
               results = doMath(lastNumber, currentNumber, operator);
               //operator and currentNumber are NOT reset
               //user can hit EQUALS multiple times to perform same math with
               //updated results
               lastNumber = results;
               displayOutput(results);
-            } else
-            if(lastNumber == null && currentNumber != null && operator == null){
-                //if only the currentNumber is set, assume equation still being built
-                //example: 3 / ....
-                operator = xin;
-                lastNumber = currentNumber;
-                currentNumber = null;
-                displayOutput(lastNumber);
-            } else
-            if(lastNumber == null && currentNumber == null && operator == null){
-              //If no values have been set, assume user error
-              //example / ....
-              displayOutput("0");
+              fromEquals = true;
             } else {
               console.log("Unexpected error occured: check switch logic at buttonClick().multiply");
             }
