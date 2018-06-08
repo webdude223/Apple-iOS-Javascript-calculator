@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculator</title>
+    <!-- <script src="script.js" type="text/javascript"></script> -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Link -->
+    <link href="https://fonts.googleapis.com/css?family=Tajawal" rel="stylesheet">
+
+    <!-- font awesome icon pack -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+
+
+</head>
+<body>
+  <header>
+    <h1>Calculator</h1>
+  </header>
+  <main>
+
+    <input type="text" class="output" id="test" value="Error" />
+
+    <div class="myRow">
+      <button class="btn flex clear" value="all-clear" onclick="buttonClick(this)">AC</button>
+      <button class="btn flex" value="opposite" onclick="buttonClick(this)">+/-</button>
+      <button class="btn flex" value="percent" onclick="buttonClick(this)"><i class="fas fa-percentage"></i></button>
+      <button class="btn flex secondary" value="divide" onclick="buttonClick(this)"><i class="fas fa-divide"></i></button>
+    </div>
+    <div class="myRow">
+      <button class="btn flex" value="7" onclick="buttonClick(this)">7</button>
+      <button class="btn flex" value="8" onclick="buttonClick(this)">8</button>
+      <button class="btn flex" value="9" onclick="buttonClick(this)">9</button>
+      <button class="btn flex secondary" value="multiply" onclick="buttonClick(this)"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="myRow">
+      <button class="btn flex" value="4" onclick="buttonClick(this)">4</button>
+      <button class="btn flex" value="5" onclick="buttonClick(this)">5</button>
+      <button class="btn flex" value="6" onclick="buttonClick(this)">6</button>
+      <button class="btn flex secondary" value="subtract" onclick="buttonClick(this)"><i class="fas fa-minus"></i></button>
+    </div>
+    <div class="myRow">
+      <button class="btn flex" value="1" onclick="buttonClick(this)">1</button>
+      <button class="btn flex" value="2" onclick="buttonClick(this)">2</button>
+      <button class="btn flex" value="3" onclick="buttonClick(this)">3</button>
+      <button class="btn flex secondary" value="add" onclick="buttonClick(this)"><i class="fas fa-plus"></i></button>
+    </div>
+    <div class="myRow">
+      <button class="btn btn0 flex" value="0" onclick="buttonClick(this)">0</button>
+      <!-- <button class="btn" >0</button> -->
+      <button class="btn btn1 flex" value="period" onclick="buttonClick(this)">.</button>
+      <button class="btn btn1 flex secondary" value="equals" onclick="buttonClick(this)"><i class="fas fa-equals"></i></button>
+    </div>
+
+
+  </main>
+  <script type="text/javascript">
+    // console.log("other: ", xxx.className);
+    var lastNumber  = null;
+    var currentNumber = null;
+    var operator = null;
+    var results = null;
+    var decimalSet = false;
+
+    function getDisplayData(){
+      return document.getElementsByClassName("output")[0].getAttribute("value");
+    }
+
+    function displayOutput(myNewValue){
+      document.getElementsByClassName("output")[0].setAttribute("value", myNewValue);
+      //getMyAttribute(myClass, myAttribute);
+    }
+
+    function doMath(xin, yin, operator){
+      switch (operator) {
+            case "divide":
+                return xin / yin;
+                break;
+            case "multiply":
+                return xin * yin;
+                break;
+            case "add":
+                return +xin + +yin;
+                break;
+            case "subtract":
+                return xin - yin;
+                break;
+      }
+    }
+
+    function calculatorLogic(xin){
+      console.log("logic called");
+      if(lastNumber != null && currentNumber != null && operator != null){
+        //if all values have been set
+        //example: 3 x 3 / ....
+        results = doMath(lastNumber, currentNumber, operator);
+        operator = xin;
+        lastNumber = results;
+        currentNumber = null;
+        displayOutput(results);
+      } else
+      if(lastNumber == null && currentNumber != null && operator == null){
+          //if only the currentNumber is set, assume equation still being built
+          //example: 3 / ....
+          operator = xin;
+          lastNumber = currentNumber;
+          currentNumber = null;
+          displayOutput(lastNumber);
+      } else
+      if(lastNumber == null && currentNumber == null && operator == null){
+        //If no values have been set, assume user error
+        //example / ....
+        displayOutput("0");
+      } else {
+        console.log("Unexpected error occured: check switch logic at buttonClick().multiply");
+      }
+    }
+
+    function buttonClick(xin) {
+      let myValue = xin.getAttribute("value");
+
+      //check for operators
+      //clear
+      //percent
+      //opposite
+      //divide
+      //multiply
+      //subtract
+      //add
+      //period
+      //equals
+
+      //if operator has been set....
+      switch (myValue){
+            case "all-clear":
+                //button changes between AC and C, and value for button changes between all-clear and clear
+                //Once a character is entered, AC changes to C. If C is clicked, clear is called on switch and
+                //changes value to all-clear.
+                //if AC clicked again, all-clear is called on switch, and lastNumber and operator are reset
+                currentNumber = null;
+                lastNumber = null;
+                operator = null;
+                results = null;
+                decimalSet = false;
+                //document.getElementsByClassName("clear")[0].innerHTML = "AC";
+                displayOutput("0");
+                break;
+
+            case "clear":
+                //button changes between AC and C, and value for button changes between all-clear and clear
+                //Once a character is entered, AC changes to C. If C is clicked, clear is called on switch and
+                //changes value to all-clear.
+                //if AC clicked again, all-clear is called on switch, and lastNumber and operator are reset
+                currentNumber = null;
+                results = null;
+                decimalSet = false;
+                document.getElementsByClassName("clear")[0].innerHTML = "AC";
+                document.getElementsByClassName("clear")[0].setAttribute("value", "all-clear");
+                displayOutput("0");
+                break;
+
+            case "percent":
+                //results take priority over currentNumber, since currentNumber is not always the last outputed number
+                if(results != null){
+                  displayOutput(results /= 100);
+                } else
+                if(currentNumber != null){
+                  displayOutput(currentNumber /= 100);
+                }
+                break;
+
+            case "opposite":
+                //results take priority over currentNumber, since currentNumber is not always the last outputed number
+                if(results != null){
+                  displayOutput(results *= -1);
+                } else
+                if(currentNumber != null){
+                  displayOutput(currentNumber *= -1);
+                }
+                break;
+
+            case "divide":
+                console.log("Divide found on switch");
+                calculatorLogic(myValue);
+                break;
+
+            case "multiply":
+                console.log("multiply found on switch");
+                calculatorLogic(myValue);
+                break;
+
+            case "subtract":
+                console.log("Subtract found on switch");
+                calculatorLogic(myValue);
+                break;
+
+            case "add":
+                console.log("Add found on switch");
+                calculatorLogic(myValue);
+                break;
+
+            case "period":
+                document.getElementsByClassName("clear")[0].innerHTML = "C";
+                if(decimalSet == false){
+                    (currentNumber == null) ? currentNumber = 0 + "." : currentNumber += ".";
+                    decimalSet = true;
+                } else {
+                  console.log("Number is already a decimal");
+                }
+                displayOutput(currentNumber);
+                break;
+
+            case "equals":
+                console.log("logic called");
+                if(lastNumber != null && currentNumber != null && operator != null){
+                  //if all values have been set
+                  //example: 3 x 3 / ....
+                  results = doMath(lastNumber, currentNumber, operator);
+                  //operator and currentNumber are NOT reset
+                  //user can hit EQUALS multiple times to perform same math with
+                  //updated results
+                  lastNumber = results;
+                  displayOutput(results);
+                } else
+                if(lastNumber == null && currentNumber != null && operator == null){
+                    //if only the currentNumber is set, assume equation still being built
+                    //example: 3 / ....
+                    operator = xin;
+                    lastNumber = currentNumber;
+                    currentNumber = null;
+                    displayOutput(lastNumber);
+                } else
+                if(lastNumber == null && currentNumber == null && operator == null){
+                  //If no values have been set, assume user error
+                  //example / ....
+                  displayOutput("0");
+                } else {
+                  console.log("Unexpected error occured: check switch logic at buttonClick().multiply");
+                }
+                break;
+
+            default:
+                //button changes between AC and C, and value for button changes between all-clear and clear
+                //Once a character is entered, AC changes to C. If C is clicked, clear is called on switch and
+                //changes value to all-clear.
+                //if AC clicked again, all-clear is called on switch, and lastNumber and operator are reset
+                document.getElementsByClassName("clear")[0].innerHTML = "C";
+                document.getElementsByClassName("clear")[0].setAttribute("value", "clear");
+                (currentNumber == null) ? currentNumber = myValue : currentNumber += myValue;
+                displayOutput(currentNumber);
+                break;
+
+
+      } //end switch
+    } //end function
+
+    //proof script is working, set to 0;
+    displayOutput("0");
+
+  </script>
+</body>
+
+</html>

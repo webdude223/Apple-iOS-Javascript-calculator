@@ -1,0 +1,91 @@
+body {
+  margin 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Tajawal', sans-serif;
+}
+
+main {
+  width: 300px;
+  height: auto;
+  margin: 0 auto;
+  background-color: #5b5b5b;
+  box-sizing: border-box;
+  padding: 0px;
+  border-radius: 5px;
+}
+
+button {
+  /* float: left; */
+  width: 50px;
+  height: 60px;
+  border: solid #d2d2d2 1px;
+  /* border-top: none;
+  border-right: none; */
+  /* border-left: solid #d2d2d2 1px;
+  border-bottom: solid #d2d2d2 1px; */
+  background-color: #f8f8f8;
+  color: black;
+  font-size: 16pt;
+  /* padding: 5px; */
+  margin: 0;
+  box-sizing: border-box;
+  /* border-radius: 5px; */
+  font-size: 15pt;
+  flex-grow: 1;
+  transition: background-color .1s ease-in, border .3s ease-in;
+
+}
+
+button:hover {
+  background-color: #dfdfdf;
+}
+
+button:focus {
+  outline: none;
+  border: solid blue 1px;
+}
+
+input[type="text"] {
+  width: 100%;
+  height: 70px;
+  margin: 25px auto 0px auto;
+  padding: 0 20px 3px 0;
+  box-sizing: border-box;
+  /* border-radius: 5px; */
+  font-size: 26pt;
+  text-align: right;
+  background-color: #5b5b5b;
+  color: white;
+  border: none;
+}
+
+.myRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0px;
+  /* min-width: 70%;
+  height: auto; */
+  background-color: red;
+}
+
+.flex {
+
+}
+
+.btn0 {flex-grow: 4;}
+.btn1 {flex-grow: 1;}
+
+.secondary {
+  color: white;
+  background-color: #FA9A2F;
+  transition: background-color .1s ease-in;
+}
+
+.secondary:hover {
+  background-color: #e18a2a;
+}
